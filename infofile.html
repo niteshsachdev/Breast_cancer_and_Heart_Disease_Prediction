@@ -1,0 +1,499 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import MetaTags from 'react-meta-tags';
+import logo from './doc.jpg';
+import './App.css';
+import { Button, Container, Divider, Grid, Item, Header, Table, Icon, Image, List, Menu, Responsive, Segment, Sidebar, Visibility } from 'semantic-ui-react';
+import { BrowserRouter as Router, withRouter, Switch, Route, Link } from 'react-router-dom';
+import Home from './home.js';
+import AdHome from './adminhome.js';
+import Contact from './contact.js';
+import About from './about.js';
+import Signup from './signup.js';
+import Logged from './logged.js';
+import Admin from './admin.js';
+import axios from 'axios';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      details: '',
+      fname: '',
+      lname: '',
+      mobile: '',
+      email: '',
+      address: '',
+      gender: '',
+      pass: '',
+      repass: '',
+      name:'',
+      cemail:'',
+      msg:'',
+      doc: '',
+      _id: '',
+      agree: '',
+      employees: [],
+      hRes:'',
+      user: [],
+      doctors: [],
+      oldPass: '',
+      newPass: '',
+      heartAge: '',
+      heartTbps: '',
+      heartGen: '',
+      heartBS: '',
+      heartCPT: '',
+      heartEia: '',
+      heartGen: '',
+      heartNcv: '',
+      heartRER: '',
+      heartSlope: '',
+      hData:[],
+      open: false,
+      crdisabled: true,
+      hrtdisabled: false,
+      content: '',
+    }
+  }
+  setheartAge = (evt) => {
+    this.setState({
+      heartAge: evt.target.value
+    })
+  }
+  setheartTbps = (evt) => {
+    this.setState({
+      heartTbps: evt.target.value
+    })
+  }
+  setheartGen = (evt) => {
+    this.setState({
+      heartGen: evt.target.value
+    })
+  }
+  setheartBS = (evt) => {
+    this.setState({
+      heartBS: evt.target.value
+    })
+  }
+  setheartCPT = (evt) => {
+    this.setState({
+      heartCRT: evt.target.value
+    })
+  }
+  setheartEia = (evt) => {
+    this.setState({
+      heartEis: evt.target.value
+    })
+  }
+  setheartGen = (evt) => {
+    this.setState({
+      heartGen: evt.target.value
+    })
+  }
+  setheartNcv = (evt) => {
+    this.setState({
+      heartNcv: evt.target.value
+    })
+  }
+  setheartRER = (evt) => {
+    this.setState({
+      heartRER: evt.target.value
+    })
+  }
+  setheartSlope = (evt) => {
+    this.setState({
+      heartSlope: evt.target.value
+    })
+  }
+  setFName = (evt) => {
+    this.setState({
+      fname: evt.target.value
+    })
+  }
+
+  setLName = (evt) => {
+    this.setState({
+      lname: evt.target.value
+    })
+  }
+  setGender = (evt) => {
+    this.setState({
+      gender: evt.target.value
+    })
+  }
+  setAddress = (evt) => {
+    this.setState({
+      address: evt.target.value
+    })
+  }
+  setOldPassword = (evt) => {
+    this.setState({
+      oldPass: evt.target.value
+    })
+  }
+  setNewPassword = (evt) => {
+    this.setState({
+      newPass: evt.target.value
+    })
+  }
+  setMobile = (evt) => {
+    this.setState({
+      mobile: evt.target.value
+    })
+  }
+  setLogEmail = (evt) => {
+    this.setState({
+      email: evt.target.value
+    })
+  }
+  setLogPassword = (evt) => {
+    this.setState({
+      pass: evt.target.value
+    })
+  }
+  setAdLogEmail = (evt) => {
+    this.setState({
+      email: evt.target.value
+    })
+  }
+  setAdLogPassword = (evt) => {
+    this.setState({
+      pass: evt.target.value
+    })
+  }
+  setEmail = (evt) => {
+    this.setState({
+      email: evt.target.value
+    })
+  }
+  setPassword = (evt) => {
+    this.setState({
+      pass: evt.target.value
+    })
+  }
+  resetPassword = (evt) => {
+    this.setState({
+      repass: evt.target.value
+    })
+  }
+
+  setName = (evt) => {
+    this.setState({
+      name: evt.target.value
+    })
+  }
+  setMessage = (evt) => {
+    this.setState({
+      msg: evt.target.value
+    })
+  }
+  setCEmail = (evt) => {
+    this.setState({
+      cemail: evt.target.value
+    })
+  }
+  sethData = (data)=>{
+    this.setState({
+      hData:data
+    })
+    console.log(this.state.hData)
+  }
+  setResH  = (data)=>{
+    this.setState({
+      hRes:data
+    })
+    console.log(this.state.hRes);
+  }
+
+
+  login = () => {
+    if (this.state.email === '' || this.state.password === '') {
+      alert("Please Enter the data in the fields");
+    }
+    else {
+      let dataList = { email: this.state.email, pass: this.state.pass };
+      axios.post('/userlogin', dataList).then((res) => {
+
+        if (res.data.logResult === "Wrong Password") {
+          console.log(res)
+          alert("Wrong Id/Password");
+          this.props.history.push('/');
+        }
+
+        else if (res.data.logResult === "NSU") {
+          alert("No Such User,Please SignUp");
+          this.props.history.push('/');
+        }
+        else if (res) {
+          console.log(res.data);
+          this.setState({
+            _id: res.data._id,
+            email: res.data.email,
+            user: res.data
+          })
+          this.props.history.push('/logged#start');
+          console.log(this.state.user)
+          console.log(this.state.user.password);
+        }
+
+      })
+    }
+  }
+  adLogin = () => {
+    if (this.state.email === '' || this.state.password === '') {
+      alert("Please Enter the data in the fields");
+    }
+    else {
+      let dataList = { email: this.state.email, pass: this.state.pass };
+      axios.post('/userlogin', dataList).then((res) => {
+        if (res) {
+          console.log(res.data);
+          this.setState({
+            _id: res.data._id,
+            email: res.data.email,
+            user: res.data
+          })
+          this.props.history.push('/adminpanel');
+          console.log(this.state.user)
+          console.log(this.state.user.password);
+        }
+        else {
+          alert("No Such User Found, If new Please Sign Up")
+        }
+
+      })
+    }
+  }
+  register = () => {
+    if (this.state.email === '' || this.state.mobile === '') {
+      alert("Please Enter Complete information");
+    }
+    if (this.state.pass !== this.state.repass) {
+      alert('Please Recheck the Password you entered');
+    }
+    if (this.state.mobile.length !== 10) {
+      alert('Please Enter a Valid Mobile Number');
+    }
+    if (this.state.agree === '') {
+      alert("You have to agree to our Terms and Policy to Continue...");
+    }
+    else {
+      let dataList = { fname: this.state.fname, lname: this.state.lname, mobile: this.state.mobile, address: this.state.address, gender: this.state.gender, email: this.state.email, pass: this.state.pass };
+      axios.post('/User', dataList).then((res) => {
+        if (res) {
+          this.props.history.push('/');
+          alert("Your details are with Us,Kindly Login");
+        }
+        else {
+          this.props.history.push('/');
+        }
+      })
+    }
+  }
+  sendMessage = ()=>{
+      let msglist = {name:this.state.name,email:this.state.cemail,msg:this.state.msg}
+      axios.post('/Contact',msglist).then((res)=>{
+        if(res){
+          this.props.history.push('/logged');
+          alert('Your Message is recieved');
+        }
+        else{
+          alert('Sorry, Maybe our server is not Working,Please Try Again Later');
+        }
+      })
+  }
+  docdetails = (evt) => {
+    this.setState({
+      doc: evt
+    })
+    console.log(this.state.doc)
+  }
+  fetchdetails = () => {
+    let type = '';
+    if (this.state.doc === '') {
+      alert("Please Enter the Complete Details to Check");
+    }
+    else {
+      if (this.state.doc === 'Heart') {
+        type = 'cardiologist'
+      }
+      else if (this.state.doc === 'Cancer') {
+        type = 'oncologist'
+      }
+      axios.get('https://api.betterdoctor.com/2016-03-01/doctors?specialty_uid=' + type + '&location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&skip=0&limit=10&user_key=97fff13d6894f698df6d283ab0c0f075').then((res) => {
+        console.log(res);
+        this.setState({
+          doctors: res.data.data
+        })
+      })
+    }
+  }
+  displayDetails = () => {
+    return this.state.doctors.map((elem) => <Item><Item.Image size='small' src={elem.profile.image_url}></Item.Image>
+      <Item.Content><Item.Header as='a'>{elem.profile.first_name} {elem.profile.middle_name} {elem.profile.last_name} Title:- {elem.profile.title}</Item.Header><Item.Description>{elem.profile.bio}</Item.Description></Item.Content>
+    </Item>)
+  }
+
+  displayData = () => {
+    if (this.state._id === '5da87cfb46289d5718a60bcc') {
+      axios.get('/details').then((res) => {
+        if (res) {
+          this.setState({
+            employees: res.data
+          })
+          console.log(res.data);
+          console.log(this.state.employees);
+        }
+        else {
+          alert("Sorry, You are not an authorized User for this...")
+        }
+      })
+
+    }
+  }
+  checkAgreement = (e) => {
+    this.setState({
+      agree: e.target.value
+    })
+  }
+  changePass = () => {
+    if (this.state.user.password === this.state.oldPass) {
+      let obj = {
+        _id: this.state._id,
+        newPass: this.state.newPass
+      }
+      axios.post('/userUpd', obj).then((res) => {
+        if (res) {
+          this.setState({
+            user: res.data,
+          })
+          this.props.history.push('/');
+          alert("Please Login Again with your New Password");
+        }
+        console.log(res.data)
+      })
+    }
+  }
+  dispdet = () => {
+
+    return this.state.employees.map((elem) => <Table.Body><Table.Row><Table.Cell>{elem.name}</Table.Cell><Table.Cell>{elem.address}</Table.Cell><Table.Cell>{elem.mobile}</Table.Cell><Table.Cell>{elem.email}</Table.Cell></Table.Row></Table.Body>)
+  }
+  displayUser = () => {
+    return <Table.Row><Table.Cell>{this.state.user.name}</Table.Cell><Table.Cell>{this.state.user.address}</Table.Cell><Table.Cell>{this.state.user.mobile}</Table.Cell><Table.Cell>{this.state.user.email}</Table.Cell></Table.Row>
+  }
+  logout = () => {
+    this.props.history.push('/');
+  }
+  showPRCancer = () => {
+    this.setState({ open: true, content: "You might be at a Risk of Cancer." })
+  }
+  showNRCancer = () => {
+    this.setState({ open: true, content: "Your Condition seems to be Normal." })
+  }
+  showPRHeart = () => {
+    this.setState({ open: true, content: "You might be at a Risk of Heart Disease." })
+  }
+  showNRHeart = () => {
+    this.setState({ open: true, content: "Your Condition seems to be Normal." })
+  }
+  handleConfirm = () => { 
+    this.setState({ open: false })
+    let hData = {email:this.state.email,hData:this.state.hData,hRes:this.state.hRes}
+    axios.post('/addHeartData', hData).then((res) => {
+      if (res) {
+        this.props.history.push('/logged');
+        alert("Your Report has been Downloaded");
+      }
+      console.log(res.data)
+    })
+  }
+  
+  handleCancel = () => { this.setState({ open: false }) }
+
+  // HomepageHeading.propTypes={
+  //   mobile:PropTypes.bool,
+  // }
+  render() {
+    return (
+      <div>
+        <MetaTags>
+          <title>Heart disease and Cancer analysis</title>
+          <meta name='description' content='Heart Disease, Breast Cancer, Cardiovascular disease, anigna, Chest pain, area worst, Rest Bp, cholestrol, Fasting Blood Sugar, Resting electrographic, max heart rate, old peak, vessels, colored vessels, gender,perimeter worst, analysis, heart disease, analysis breat cancer, concave points mean, radius worst, concavity worst'> </meta>
+        </MetaTags>
+        <Menu fixed='top' inverted>
+          <Container>
+            <Link to='/'>
+              <Menu.Item as='a' header>
+                <Image size='mini' src={logo} style={{ marginRight: '1.5em' }}></Image>HCProj
+          </Menu.Item></Link>
+            <Menu.Item as='a'><Link to='/'>Home</Link></Menu.Item>
+            <Menu.Item as='a'><Link to='/about'>About</Link></Menu.Item>
+          </Container>
+        </Menu>
+
+
+        <Route path='/' exact render={(props) => <Home {...props} login={this.login} setLogEmail={this.setEmail} setLogPassword={this.setPassword} ></Home>}></Route>
+       <Container>
+        <Route path='/about' render={(props) => <About {...props}> </About>}></Route>
+        <Route path='/signup' render={(props) => <Signup {...props} register={this.register} checkAgreement={this.checkAgreement} setFName={this.setFName} setPassword={this.setPassword} resetPassword={this.resetPassword} setLName={this.setLName} setAddress={this.setAddress} setMobile={this.setMobile} setEmail={this.setEmail} setGender={this.setGender}> </Signup>}></Route>
+        <Route path='/logged' render={(props) => <Logged {...props} name={this.state.user.name} email={this.state.email} setResH={this.setResH} sethData={this.sethData} sendMessage={this.sendMessage} cemail={this.setCEmail} setName={this.setName} setMessage={this.setMessage} content={this.state.content} showNRHeart={this.showNRHeart} showPRHeart={this.showPRHeart} showNRCancer={this.showNRCancer} open={this.state.open} showPRCancer={this.showPRCancer} handleCancel={this.handleCancel} handleConfirm={this.handleConfirm} logout={this.logout} dispdet={this.dispdet} oldPass={this.oldPass} newPass={this.newPass} setOldPassword={this.setOldPassword} setNewPassword={this.setNewPassword} user={this.state.user} id={this.state._id} email={this.state.email} displayUser={this.displayUser} changePass={this.changePass} details={this.state.details} docdetails={this.docdetails} fetchdetails={this.fetchdetails} displayDetails={this.displayDetails} heartAge={this.setheartAge} heartTbps={this.setheartTbps} heartGen={this.setheartGen} heartCPT={this.setheartCPT} heartSC={this.setheartSC} heartBS={this.setheartBS} heartRER={this.setheartRER} heartRate={this.setheartRate} heartST={this.setheartST} heartEia={this.setheartEia} heartNcv={this.setheartNcv} heartSlope={this.setheartSlope} ></Logged>}></Route>
+        <Route path="/admin" render={(props) => <AdHome {...props} logout={this.logout} setAdLogEmail={this.setAdLogEmail} setAdLogPassword={this.setAdLogPassword} adLogin={this.adLogin} ></AdHome>}></Route>
+        <Route path="/adminpanel" render={(props) => <Admin {...props} logout={this.logout} dispdet={this.dispdet} displayData={this.displayData} ></Admin>}></Route>
+        <Route path="/contact" render={(props)=><Contact {...props} ></Contact>}></Route>
+        </Container>
+        <Segment inverted vertical style={{ margin: '25em 0em 0em', padding: '5em 0em' }}>
+          <Container textAlign='center'>
+            <Grid divided inverted stackable>
+              <Grid.Column width={3}>
+                <Header inverted as='h4' content='Heart'/>
+                <List link inverted>
+                  <List.Item as='a'><Link to='/about'>Heart-Analysis</Link></List.Item>
+                  <List.Item as='a'><Link to='/about'>About</Link></List.Item>
+                </List>
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Header inverted as='h4' content='Cancer' />
+                <List link inverted>
+                  <List.Item as='a'><Link to='/about'>Cancer-Analysis</Link></List.Item>
+                </List>
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Header inverted as='h4' content='Heart & Cancer' />
+                <List link inverted>
+                  <List.Item as='a'><Link to='/about'>Heart-Cancer-Analysis</Link></List.Item>
+                </List>
+              </Grid.Column>
+              <Grid.Column width={7}>
+                <Header inverted as='h4' content='Analysis Part' />
+                <p>A website for the Prediction of Heart disease and Cancer. Sign Up and login to use the same.</p>
+
+              </Grid.Column>
+            </Grid>
+            <Divider inverted section />
+            <Image centered size='mini' src={logo} />
+            <List horizontal inverted divided link size='small'>
+              <List.Item as='a' href='#'>
+                Site Map
+              </List.Item>
+              <List.Item as='a'><Link to='/contact'>
+                Contact Us
+                </Link>
+              </List.Item>
+              <List.Item as='a' href="#">
+                Terms and Conditions
+              </List.Item>
+              <List.Item as='a' href="#">
+                Privacy Policy
+              </List.Item>
+            </List>
+
+          </Container>
+        </Segment>
+
+      </div>
+    );
+  }
+}
+
+export default withRouter(App);

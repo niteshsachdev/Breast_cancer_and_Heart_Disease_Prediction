@@ -1,0 +1,45 @@
+from PIL import Image, ImageDraw, ImageFont
+l=[67,1,0,100,299,0,0,125,1,0.9,1,2,2]
+l=[50.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+if len(l)==13:
+    border_img=Image.new('RGB',(2480,3508),'White')
+    logo=Image.open('logo192.png')
+    logo.thumbnail((500,500))
+    border_img.paste(logo, (1190, 300))
+    d = ImageDraw.Draw(border_img)
+    font = ImageFont.truetype("arial.ttf", 150)
+    font1 = ImageFont.truetype("arial.ttf",100)
+    d.text((600,600), "H&C HOSPITAL", fill=(255,0,0),font=font)
+    d.text((600,800), "HEART REPORT", fill=(255,0,0),font=font)
+    text=" Age : "+str(l[0])+'\n'+" SEX : \t"+str(l[1])+ '\n' +" Chest Pain : \t"+str(l[2])+ '\n'+" trestbps : \t"+str(l[3])+'\n'+ "Chol : "+str(l[4])+ '\n'+" Fbs : "+str(l[5])+ '\n'+" Rest ECG : "+str(l[6])+ '\n'+" thalach : "+str(l[7])+ '\n'+" exang : "+str(l[8])+ '\n'+" oldpeak : "+str(l[9])+ '\n'+" Slope : "+str(l[10])+ '\n'+" CA : "+str(l[11])+ '\n'+" THAL : "+str(l[12])
+    d.text((200,1050), text, fill=(0,0,0),font=font1)
+    sign = Image.open("sign.png")
+    sign.thumbnail((400, 200))
+    border_img.paste(sign, (1040, 3100))
+    text1="  Dr. Sylvester"+'\n'+"(Founder H&C)"
+    d.text((900,3200), text1, fill=(0,0,255),font=font1)
+    #certificate = Image.new('RGB', (border_img.width+20, border_img.height+20), 'yellow')
+    #certificate.paste(border_img, (10, 10))
+    border_img.show()
+    border_img.save('report.pdf')
+else:
+    border_img=Image.new('RGB',(2480,3508),'White')
+    logo=Image.open('logo192.png')
+    logo.thumbnail((500,500))
+    border_img.paste(logo, (1190, 300))
+    d = ImageDraw.Draw(border_img)
+    font = ImageFont.truetype("arial.ttf", 150)
+    font1 = ImageFont.truetype("arial.ttf",100)
+    d.text((600,600), "H&C HOSPITAL", fill=(255,0,0),font=font)
+    d.text((600,800), "BREAST CANCER REPORT", fill=(255,0,0),font=font)
+    text=" area_worst : "+l[0]+'\n'+" concave points_worst :"+l[1]+ '\n' +" perimeter_worst : "+l[2]+ '\n'+" concave points_mean : "+l[3]+ '\n'+" radius_worst : "+l[4]+ '\n'+" concavity_worst : "+l[5]+ '\n'+" radius_mean : "+l[6]+ '\n'+" area_se : "+l[7]+ '\n'+" area_mean : "+l[8]+ '\n'+" perimeter_mean : "+l[9]
+    d.text((200,1050), text, fill=(0,0,0),font=font1)
+    sign = Image.open("sign.png")
+    sign.thumbnail((400, 200))
+    border_img.paste(sign, (1040, 3100))
+    text1="  Dr. Sylvester"+'\n'+"(Founder H&C)"
+    d.text((900,3200), text1, fill=(0,0,255),font=font1)
+    #certificate = Image.new('RGB', (border_img.width+20, border_img.height+20), 'yellow')
+    #certificate.paste(border_img, (10, 10))
+    border_img.show()
+    border_img.save('report.pdf')
